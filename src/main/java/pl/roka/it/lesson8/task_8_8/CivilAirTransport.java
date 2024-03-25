@@ -6,7 +6,7 @@ public class CivilAirTransport extends AirTransport {
     private int numberPassengers;
     private boolean businessClass;
 
-    public void cargoLoading(int passengers){
+    public void passengersLoading(int passengers){
         if(numberPassengers < passengers) {
             System.out.println("Вам нужен самолет побольше");
         }else {

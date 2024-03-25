@@ -10,7 +10,7 @@ public class MilitaryAirTransport extends AirTransport {
     private boolean ejectionSystem;
     private int rockets;
 
-    public void cargoLoading(int rockets){
+    public void rocketCheck(int rockets){
         if(this.rockets < rockets) {
             System.out.println("Боеприпасы отсутствуют");
         }else {
