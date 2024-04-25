@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Задание 34.
@@ -32,17 +34,27 @@ public class Task_16_2 {
                 builder.append(line).append("\n");
             }
             List<Integer> numbers = new ArrayList<>();
-            String[] arrayOfString = builder.toString().split("\\s+");
+//            String[] arrayOfString = builder.toString().split("\\s+");
             int sum = 0;
-            for (String s : arrayOfString) {
-                try {
-                    int num = Integer.parseInt(s);
-                    numbers.add(num);
+//            for (String s : arrayOfString) {
+//                try {
+//                    int num = Integer.parseInt(s);
+//                    numbers.add(num);
+//                    sum += num;
+//                } catch (NumberFormatException e) {
+//                    System.out.println("Something was wrong " + e.getMessage());
+//                }
+//            }
+
+            Pattern pattern = Pattern.compile("\\b\\d+\\b");
+            Matcher matcher = pattern.matcher(builder.toString());
+
+            while(matcher.find()){
+                int num = Integer.parseInt(matcher.group());
+                numbers.add(num);
                     sum += num;
-                } catch (NumberFormatException e) {
-                    System.out.println("Something was wrong " + e.getMessage());
-                }
             }
+
             System.out.println(numbers);
             System.out.println(sum);
             System.out.println(new HashSet<>(numbers));
