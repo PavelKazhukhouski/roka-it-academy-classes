@@ -15,10 +15,10 @@ import java.util.regex.Pattern;
  */
 public class Task_16_2 {
     public static void main(String[] args) {
-        String text = "Two 11 roads  1 diverged in a 48 yellow wood,\n" +
+        String text = "Two 11 roads  1diverged in a 48 yellow wood,\n" +
                 "And 48 sorry 11 I could not travel both 136\n" +
                 "And 48 be one 136 traveler, 22 long 25 I stood\n" +
-                "And looked 13 down one as far as I could\n" +
+                "And looked 13 down one as far 555as I could\n" +
                 "To 25 where it bent 48 in  44 the undergrowth.";
 
         try (FileWriter writer = new FileWriter("text2.txt")) {
@@ -46,7 +46,7 @@ public class Task_16_2 {
 //                }
 //            }
 
-            Pattern pattern = Pattern.compile("\\b\\d+\\b");
+            Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(builder.toString());
 
             while(matcher.find()){
