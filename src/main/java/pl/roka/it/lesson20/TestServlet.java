@@ -18,6 +18,7 @@ public class TestServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/ html;charset=UTF-8");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
@@ -26,6 +27,7 @@ public class TestServlet extends HttpServlet {
         }
         try (Connection connection = DriverManager.getConnection(USER_URL, USER_NAME, USER_PASS);
              PrintWriter pw = resp.getWriter()) {
+            pw.println("<h3>" + "It is test servlet!!!" + "</h3>");
 
             switch (req.getParameter("command")) {
                 case "read" -> CRUD.readData(connection, pw);
