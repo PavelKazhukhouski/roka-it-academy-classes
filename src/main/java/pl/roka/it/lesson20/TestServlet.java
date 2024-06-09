@@ -16,30 +16,66 @@ public class TestServlet extends HttpServlet {
     private static final String USER_NAME = "root";
     private static final String USER_PASS = "root";
 
+    private Connection connection;
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/ html;charset=UTF-8");
+    public void init() throws ServletException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            connection = DriverManager.getConnection(USER_URL, USER_NAME, USER_PASS);
         } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+            throw new ServletException("Failed to register MySQL driver or establish connection", e);
         }
-        try (Connection connection = DriverManager.getConnection(USER_URL, USER_NAME, USER_PASS);
-             PrintWriter pw = resp.getWriter()) {
-            pw.println("<h3>" + "It is test servlet!!!" + "</h3>");
+    }
 
-            switch (req.getParameter("command")) {
-                case "read" -> CRUD.readData(connection, pw);
-                case "create" -> CRUD.createData(connection, pw);
-                case "update" -> CRUD.updateData(connection, pw);
-                case "delete" -> CRUD.deleteData(connection, pw);
-                default -> pw.write("Invalid command");
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html;charset=UTF-8");
+
+        try (PrintWriter pw = resp.getWriter()) {
+            pw.println("<h3>It is test servlet!!!</h3>");
+
+            String command = req.getParameter("command");
+            if (command != null) {
+                dataBaseСommand(command, connection, pw);
+            } else {
+                pw.write("No command provided");
             }
-
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new ServletException("Database error", e);
         }
+    }
+
+    private void dataBaseСommand(String command, Connection connection, PrintWriter pw) throws SQLException {
+        switch (command) {
+            case "read":
+
+                CRUD.readData(connection, pw);
+                break;
+            case "create":
+                CRUD.createData(connection, pw);
+                break;
+            case "update":
+                CRUD.updateData(connection, pw);
+                break;
+            case "delete":
+                CRUD.deleteData(connection, pw);
+                break;
+            default:
+                pw.write("Invalid command");
+                break;
+        }
+    }
+
+    @Override
+    public void destroy() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
